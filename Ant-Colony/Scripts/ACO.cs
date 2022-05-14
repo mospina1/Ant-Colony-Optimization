@@ -101,7 +101,7 @@ public class ACO : Node
 			else
 			{
 				if (graph.nodes[step].edges[j].pheromoneStrength > 0)
-					probabilitySelect[j] = Mathf.Pow(graph.distances[c,j], distancePower) * (graph.nodes[step].edges[j].pheromoneStrength);
+					probabilitySelect[j] = graph.distances[c,j] * (graph.nodes[step].edges[j].pheromoneStrength);
 				else
 					probabilitySelect[j] = Mathf.Pow(graph.distances[c,j], distancePower);
 				//GD.Print(probabilitySelect[j]);
