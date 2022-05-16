@@ -46,6 +46,9 @@ public class ACO : Node
 			edge.AddPoint(start);
 			edge.AddPoint(end);
 			edge.Width = 2f;
+			edge.r = 1f;
+			edge.b = .4f;
+			edge.g = .4f;
 			edge.pheromoneStrength = 1f;
 			CallDeferred("add_child", edge);
 		}
