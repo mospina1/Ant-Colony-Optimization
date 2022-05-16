@@ -49,14 +49,6 @@ public class ACO : Node
 			edge.pheromoneStrength = 1f;
 			CallDeferred("add_child", edge);
 		}
-		Edge lastEdge = (Edge)graph.EdgeScene.Instance();
-		Vector2 s = new Vector2(path[path.Count-1].x, path[path.Count-1].y);
-		Vector2 e = new Vector2(path[0].x, path[0].y);
-		lastEdge.AddPoint(s);
-		lastEdge.AddPoint(e);
-		lastEdge.Width = 2f;
-		lastEdge.pheromoneStrength = 1f;
-		CallDeferred("add_child", lastEdge);
 	}
 
 	public void ConstructSolution()
