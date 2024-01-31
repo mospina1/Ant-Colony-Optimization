@@ -10,8 +10,7 @@ public class Ant : Node2D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		// path = new Array<GraphNode>();
-		//visited = new Array<bool>();
+		// path length is infinite because the best path length must be less than any other one
 		pathLength = Mathf.Inf;
 	}
 

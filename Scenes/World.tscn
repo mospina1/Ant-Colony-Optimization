@@ -11,7 +11,6 @@ current = true
 
 [node name="Graph" type="Node2D" parent="."]
 script = ExtResource( 1 )
-seed = 11111444
 antCount = 1024
 nodeCount = 50
 
@@ -32,6 +31,13 @@ __meta__ = {
 "_editor_description_": "Ants"
 }
 
+[node name="SeedLabel" type="Label" parent="."]
+margin_left = -484.0
+margin_top = -135.0
+margin_right = -444.0
+margin_bottom = -121.0
+text = "Seed: "
+
 [node name="StartButton" type="Button" parent="."]
 margin_left = -485.0
 margin_top = -203.0
@@ -39,4 +45,32 @@ margin_right = -444.0
 margin_bottom = -183.0
 text = "Start"
 
+[node name="RandomSeedButton" type="Button" parent="."]
+margin_left = -484.0
+margin_top = -167.0
+margin_right = -472.0
+margin_bottom = -147.0
+text = "Generate New Seed"
+
+[node name="EnterButton" type="Button" parent="."]
+margin_left = -334.0
+margin_top = -137.0
+margin_right = -322.0
+margin_bottom = -117.0
+text = "Enter"
+
+[node name="EnterSeed" type="LineEdit" parent="."]
+margin_left = -442.0
+margin_top = -140.0
+margin_right = -346.0
+margin_bottom = -114.0
+hint_tooltip = "Enter only numbers"
+max_length = 8
+expand_to_text_length = true
+virtual_keyboard_enabled = false
+clear_button_enabled = true
+shortcut_keys_enabled = false
+
 [connection signal="pressed" from="StartButton" to="." method="_on_StartButton_pressed"]
+[connection signal="pressed" from="RandomSeedButton" to="Graph" method="_on_RandomSeedButton_pressed"]
+[connection signal="pressed" from="EnterButton" to="Graph" method="_on_EnterButton_pressed"]

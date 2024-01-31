@@ -3,20 +3,21 @@ using Godot.Collections;
 
 public class Graph : Node2D
 {
-	[Export] public ulong seed = 5112001;
 	[Export] public int antCount = 5;
 	[Export] public int nodeCount = 15;
 	public Array<Ant> ants;
 	public Array<GraphNode> nodes;
 	public float[,] distances;
+	public LineEdit seedText;
 	private PackedScene AntScene = (PackedScene)GD.Load("res://Scenes/Ant.tscn");
 	private PackedScene NodeScene = (PackedScene)GD.Load("res://Scenes/GraphNode.tscn");
 	public PackedScene EdgeScene = (PackedScene)GD.Load("res://Scenes/Edge.tscn");
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		base._Ready();
-		GD.Seed(seed);
+		seedText = GetNode<LineEdit>("/root/World/EnterSeed");
+		seedText.Text = "" + Globals.seed;
+		GD.Seed(Globals.seed);
 		nodes = new Array<GraphNode>();
 		ants = new Array<Ant>();
 		distances = new float[nodeCount,nodeCount];
@@ -60,20 +61,38 @@ public class Graph : Node2D
 				edge.Width = 2f;
 				// edge.cost = (float)GD.RandRange(1,15);
 				// GD.Print(edge.cost);
-				//GD.Print(edge.GetPointPosition(0),edge.GetPointPosition(1));
+				// GD.Print(edge.GetPointPosition(0),edge.GetPointPosition(1));
 				distances[i,k] = hueristic(nodes[i],nodes[k]);
 				CallDeferred("add_child", edge);
 				nodes[i].edges.Add(edge);
-				//GD.Print(edge.GetPointCount());
 			}
 		}
-		//if there is time make sure the nodes don't intersect with like areas or something
+	}
+	public ulong GenerateRandomSeed()
+	{
+		GD.Randomize();
+		ulong newSeed = (ulong) GD.RandRange(0, 100000000);
+		return newSeed;
+	}
+	private void _on_RandomSeedButton_pressed()
+	{
+		Globals.seed = GenerateRandomSeed();
+		GetTree().ReloadCurrentScene();
+	}
+	private void _on_EnterButton_pressed()
+	{
+		ulong newSeed = ulong.Parse(seedText.Text);
+		SetSeed(newSeed);
+		GetTree().ReloadCurrentScene();
+	}
+	public void SetSeed(ulong newSeed)
+	{
+		Globals.seed = newSeed;
 	}
 	//Euclidean hueristic
 	public float hueristic(GraphNode from, GraphNode to)
 	{
 		float distance = Mathf.Sqrt(Mathf.Pow(from.x-to.x, 2f) + Mathf.Pow(from.y-to.y, 2f));
-		//GD.Print(distance);
 		return distance;
 	}
 }

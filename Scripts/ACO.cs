@@ -1,6 +1,7 @@
 using Godot;
 using Godot.Collections;
 
+// ACO does not find the optimal path but the best path according to the number of iterations/ants
 public class ACO : Node
 {
 	public Graph graph;
@@ -9,6 +10,8 @@ public class ACO : Node
 	public Button startButton;
 	public float bestPathLength = Mathf.Inf;
 	public Array<GraphNode> bestPath;
+	// Distance Power is used to effect the choice of path when selecting a node to go to.
+	// 0.5 seems to be a good sweet spot for finding shorter paths most of the time
 	[Export] public float distancePower = .5f;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -29,7 +32,6 @@ public class ACO : Node
 				ConstructSolution();
 				UpdatePheromones();
 			}
-			//GD.Print(graph.ants[i].pathLength,", Ant ", i);
 			if (graph.ants[i].pathLength < bestPathLength)
 			{
 				bestPathLength = graph.ants[i].pathLength;
@@ -97,7 +99,6 @@ public class ACO : Node
 	{
 		int n = graph.nodeCount;
 		int m = graph.antCount;
-		//GD.Print(step);
 		int c = graph.nodes[step].nodeNumber;
 		float[] probabilitySelect = new float[n];
 		float probabilitySum = 0f;
@@ -111,7 +112,6 @@ public class ACO : Node
 					probabilitySelect[j] = graph.distances[c,j] * (graph.nodes[step].edges[j].pheromoneStrength);
 				else
 					probabilitySelect[j] = Mathf.Pow(graph.distances[c,j], distancePower);
-				//GD.Print(probabilitySelect[j]);
 				probabilitySum += probabilitySelect[j];
 			}
 		}
@@ -121,7 +121,6 @@ public class ACO : Node
 		float p = probabilitySelect[k];
 		while (p < r)
 		{
-			//GD.Print(p);
 			k++;
 			p += probabilitySelect[k];
 		}
@@ -132,14 +131,12 @@ public class ACO : Node
 	public float ComputePathLength(int antID)
 	{
 		Ant currAnt = graph.ants[antID];
-		//GD.Print(currAnt.path.Count);
 		float length = 0;
 		for(int i = 1; i < currAnt.path.Count; i++)
 		{
 			//formula for dist between two points
 			length += graph.hueristic(currAnt.path[i],currAnt.path[i-1]);
 		}
-		//GD.Print(length);
 		return length;
 	}
 	public void UpdatePheromones()
@@ -151,6 +148,7 @@ public class ACO : Node
 	}
 	public void Evaporate()
 	{
+		// p is the pheromone evaporation rate
 		float p = .03f;
 		int n = graph.nodeCount;
 		for (int i = 0; i < n; i++)
