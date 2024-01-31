@@ -1,2 +1,2 @@
 # Ant-Colony-Optimization
-This ACO was made with Godot Game Engine by Mark Ospina based off the book "Ant Colony Optimization" by Marco Dorigo
+This ACO was made with Godot Game Engine 3.5 by Mark Ospina based on the book "Ant Colony Optimization" by Marco Dorigo
